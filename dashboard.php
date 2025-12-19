@@ -45,7 +45,9 @@ $username = $_SESSION['username'];
     <hr>
 
     <ul>
-        <li><a href="#">Notes (Coming Soon)</a></li>
+       <h2>Your Notes</h2>
+<?php include 'notes/fetch_notes.php'; ?>
+<p><a href="notes/add_note.php">Add New Notes</a></p>
         <li><a href="#">Pomodoro Timer (Coming Soon)</a></li>
         <li><a href="logout.php">Logout</a></li>
     </ul>
