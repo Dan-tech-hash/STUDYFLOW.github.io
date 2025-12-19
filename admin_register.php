@@ -1,9 +1,15 @@
 <?php
-// register.php
+// admin_register.php
 session_start();
 require 'config/db.php';
 
 $message = '';
+
+// Secret key to access this page
+$access_password = "pass"; // change this
+if (!isset($_GET['key']) || $_GET['key'] !== $access_password) {
+    die("Access denied!");
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
@@ -21,12 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // Insert new user with role 'user'
-        $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, 'user')");
+        // Insert admin user
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, 'admin')");
         $stmt->bind_param("sss", $username, $email, $hashed_password);
 
         if ($stmt->execute()) {
-            $message = "User registered successfully! You can now login.";
+            $message = "Admin registered successfully!";
         } else {
             $message = "Error: " . $stmt->error;
         }
@@ -37,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register - StudyFlow</title>
+    <title>Admin Registration - StudyFlow</title>
 </head>
 <body>
-    <h2>Register</h2>
+    <h2>Admin Registration</h2>
     <?php if ($message != '') { echo "<p>$message</p>"; } ?>
     <form method="POST" action="">
         <label>Username:</label><br>
@@ -52,9 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Password:</label><br>
         <input type="password" name="password" required><br><br>
 
-        <input type="submit" value="Register">
+        <input type="submit" value="Register Admin">
     </form>
-
-    <p>Already have an account? <a href="login.php">Login here</a></p>
 </body>
 </html>
