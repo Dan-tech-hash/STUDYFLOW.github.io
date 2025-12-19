@@ -1,10 +1,15 @@
 <?php
 // dashboard.php
 session_start();
+
+//CSRF Implementation
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 require 'config/db.php';
 
-// Check if user is logged in and role is 'user'
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
+// Check if user is logged in and is a normal user
+if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
     header("Location: login.php");
     exit;
 }
@@ -16,22 +21,34 @@ $username = $_SESSION['username'];
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard - StudyFlow</title>
+    <title>User Dashboard - StudyFlow</title>
 </head>
 <body>
+
     <h2>Welcome, <?php echo htmlspecialchars($username); ?>!</h2>
     <p>This is your dashboard.</p>
 
-    <!-- Placeholders for future features -->
-    <h3>Tasks</h3>
-    <p>Here you will see your tasks.</p>
+    <hr>
 
-    <h3>Notes</h3>
-    <p>Here you will see your notes.</p>
+    <!-- TASKS SECTION -->
+    <h2>Your Tasks</h2>
 
-    <h3>Pomodoro Timer</h3>
-    <p>Timer will appear here.</p>
+    <?php
+        // This line loads and runs fetch_tasks.php
+        include 'tasks/fetch_tasks.php';
+    ?>
 
-    <p><a href="logout.php">Logout</a></p>
+    <p>
+        <a href="tasks/add_task.php">➕ Add New Task</a>
+    </p>
+
+    <hr>
+
+    <ul>
+        <li><a href="#">Notes (Coming Soon)</a></li>
+        <li><a href="#">Pomodoro Timer (Coming Soon)</a></li>
+        <li><a href="logout.php">Logout</a></li>
+    </ul>
+
 </body>
 </html>
