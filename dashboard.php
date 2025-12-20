@@ -172,8 +172,13 @@ if ($streak > 0) {
 <ul>
     <li><a href="pomodoro/timer.php">🍅 Pomodoro Timer</a></li>
     <li><a href="pomodoro/history.php">📊 Pomodoro History</a></li>
-    <li><a href="logout.php">Logout</a></li>
 </ul>
+<h3>📤 Export</h3>
+<ul>
+    <li><a href="exports/export_pomodoro_csv.php">Download CSV</a></li>
+    <li><a href="exports/export_pomodoro_pdf.php">Download PDF</a></li>
+</ul>
+   <li><a href="logout.php">Logout</a></li>
 
 </body>
 </html>
